@@ -16,7 +16,7 @@ export const getProduct = async (page, id) => {
     console.log(error);
   }
 };
-export const getDefinedProduct = async (id) => {
+export const getProductById = async (id) => {
   try {
     const res = await request.get(`products/${id}`);
     return res.data;
@@ -27,6 +27,20 @@ export const getDefinedProduct = async (id) => {
 export const postProduct = async (data) => {
   try {
     const res = await request.post("/products", data);
+    return {
+      data: res.data,
+      success: true,
+    };
+  } catch (error) {
+    return {
+      error: error.response?.data?.error,
+      success: false,
+    };
+  }
+};
+export const putProduct = async (productId, data) => {
+  try {
+    const res = await request.put(`/products/${productId}`, data);
     return {
       data: res.data,
       success: true,
