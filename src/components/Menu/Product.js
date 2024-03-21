@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import MenuChildren from "./MenuChildren";
-function Product() {
+function MenuProduct() {
   const [categories, setCategories] = useState([]);
   useEffect(() => {
     axios
@@ -13,12 +13,12 @@ function Product() {
         console.log(error);
       });
   }, []);
-  const tilte = 'Sản Phẩm';
+  const tilte = "Sản Phẩm";
   return (
     <>
-      <MenuChildren data={categories} title={tilte}/>
+      <MenuChildren data={categories} title={tilte} />
     </>
   );
 }
 
-export default Product;
+export default MenuProduct;

@@ -1,6 +1,5 @@
-
 import MenuChildren from "./MenuChildren";
-function ProductDetail() {
+function MenuProductDetail() {
   const menuChildren = [
     {
       id: 1,
@@ -18,11 +17,11 @@ function ProductDetail() {
       path: "audioDetails",
     },
   ];
-  const tilte = 'Chi Tiết Sản Phẩm';
+  const tilte = "Chi Tiết Sản Phẩm";
   return (
     <>
-      <MenuChildren data={menuChildren} title={tilte}/>
+      <MenuChildren data={menuChildren} title={tilte} />
     </>
   );
 }
-export default ProductDetail;
+export default MenuProductDetail;
