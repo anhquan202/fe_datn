@@ -1,27 +1,70 @@
 import Form from "./Form";
 
-function PhoneDetailForm({onSubmit, errors, data}) {
+function PhoneDetailForm({ onSubmit, errors, data }) {
+  if (!data) {
+    return;
+  }
+  console.log(data);
+  const title = "Cập nhật sản phẩm";
+
   const inputs = [
     {
       type: "text",
-      name: 'product_id',
+      name: data.name,
       label: "Product name",
+      placeholder: "Product name",
       value: data.name,
-      disabled: true
+      disabled: true,
     },
-    { type: "text", name: "color", label: "Color", placeholder: "Color" },
-    { type: "text", name: "ram", label: "Ram", placeholder: "Ram" },
-    { type: "text", name: "rom", label: "Rom", placeholder: "Rom" },
-    { type: "text", name: "camera", label: "Camera", placeholder: "Camera" },
     {
       type: "text",
-      name: "screen",
+      name: "color",
+      label: "Color",
+      placeholder: "Color",
+      value: data.color,
+    },
+    {
+      type: "text",
+      name: "ram",
+      label: "Ram",
+      placeholder: "Ram",
+      value: data.ram,
+    },
+    {
+      type: "text",
+      name: "rom",
+      label: "Rom",
+      placeholder: "Rom",
+      value: data.rom,
+    },
+    {
+      type: "text",
+      name: "camera",
+      label: "Camera",
+      placeholder: "Camera",
+      value: data.camera,
+    },
+    {
+      type: "text",
+      name: "Screen",
       label: "Screen",
       placeholder: "Screen",
+      value: data.screen,
     },
     {
       type: "select",
-      name: "operating_system",
+      name: "type_id",
+      label: "Type",
+      options: [
+        { value: 1, label: "Điện thoại" },
+        { value: 2, label: "PC và laptop" },
+        { value: 3, label: "Loa, tai nghe" },
+      ],
+      value: data.type_id,
+    },
+    {
+      type: "select",
+      name: "operating_ystem",
       label: "Operating System",
       options: [
         { value: 1, label: "Apple" },
@@ -32,7 +75,7 @@ function PhoneDetailForm({onSubmit, errors, data}) {
   ];
   return (
     <>
-      <Form inputs={inputs} title={'Tạo chi tiết sản phẩm'} onSubmit={onSubmit} errors={errors}/>
+      <Form inputs={inputs} title={title} onSubmit={onSubmit} errors={errors} />
     </>
   );
 }

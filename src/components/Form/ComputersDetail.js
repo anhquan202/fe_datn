@@ -1,22 +1,47 @@
 import Form from "./Form";
 
-function ComputersDetailForm({onSubmit, errors, data}) {
+function ComputersDetailForm({ onSubmit, errors, data }) {
+  if (!data) {
+    return;
+  }
+  const title = "Cập nhật sản phẩm";
   const inputs = [
     {
       type: "text",
-      name: "product_id",
+      name: data.name,
       label: "Product name",
       placeholder: "Product name",
+      value: data.name,
+      disabled: true,
     },
-    { type: "text", name: "color", label: "Color", placeholder: "Color" },
-    { type: "text", name: "ram", label: "Ram", placeholder: "Ram" },
-    { type: "text", name: "rom", label: "Rom", placeholder: "Rom" },
-    { type: "text", name: "camera", label: "Camera", placeholder: "Camera" },
+    {
+      type: "text",
+      name: "color",
+      label: "Color",
+      placeholder: "Color",
+      value: data.color,
+    },
+    {
+      type: "text",
+      name: "ram",
+      label: "Ram",
+      placeholder: "Ram",
+      value: data.ram,
+    },
+    {
+      type: "text",
+      name: "rom",
+      label: "Rom",
+      placeholder: "Rom",
+      value: data.rom,
+    },
+    { type: "text", name: "camera", label: "Camera", placeholder: "Camera" , value: data.camera,},
     {
       type: "text",
       name: "Screen",
       label: "Screen",
       placeholder: "Screen",
+      value: data.screen,
     },
     {
       type: "select",
@@ -27,6 +52,7 @@ function ComputersDetailForm({onSubmit, errors, data}) {
         { value: 2, label: "PC và laptop" },
         { value: 3, label: "Loa, tai nghe" },
       ],
+      value: data.type_id,
     },
     {
       type: "select",
@@ -41,7 +67,7 @@ function ComputersDetailForm({onSubmit, errors, data}) {
   ];
   return (
     <>
-      <Form inputs={inputs} title={"Tạo chi tiết sản phẩm"} onSubmit={onSubmit} errors={errors} />
+      <Form inputs={inputs} title={title} onSubmit={onSubmit} errors={errors} />
     </>
   );
 }
