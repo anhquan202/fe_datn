@@ -38,9 +38,9 @@ export const postProduct = async (data) => {
     };
   }
 };
-export const putProduct = async (productId = 1, data) => {
+export const putProduct = async (productId, data) => {
   try {
-    const res = await request.put(`/products/${productId}`, data);
+    const res = await request.post(`/products/${productId}`, data);
     return {
       data: res.data,
       success: true,
