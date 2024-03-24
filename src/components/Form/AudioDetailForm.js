@@ -1,6 +1,6 @@
 import Form from "./Form";
 
-function AudioDetailForm({onSubmit, errors, data}) {
+function AudioDetailForm({onSubmit, errors, data, title}) {
   const inputs = [
     {
       type: "text",
@@ -64,7 +64,7 @@ function AudioDetailForm({onSubmit, errors, data}) {
   ];
   return (
     <>
-      <Form inputs={inputs} title={"Tạo chi tiết sản phẩm"} onSubmit={onSubmit} errors={errors} />
+      <Form inputs={inputs} title={title} onSubmit={onSubmit} errors={errors} />
     </>
   );
 }

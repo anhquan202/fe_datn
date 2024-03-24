@@ -1,7 +1,7 @@
 import Button from "./Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList } from "@fortawesome/free-solid-svg-icons";
-function Table({ title, headers, data }) {
+function Table({ title, headers, data, onEdit, onDelete }) {
   return (
     <>
       <div className="card-header">
@@ -24,7 +24,7 @@ function Table({ title, headers, data }) {
               <tr key={index}>
                 {Object.keys(item).map(
                   (key) =>
-                    key !== "id" && (
+                    key !== "id" && key !== 'type_id' && (
                       <td
                         key={key}
                         style={{
@@ -34,9 +34,9 @@ function Table({ title, headers, data }) {
                       >
                         {key === "image" ? (
                           <img
-                            src={item[key]}
-                            alt="failed"
+                            src={`http://127.0.0.1:8000/storage/${item[key]}` || item[key]}
                             style={{ width: "60px", height: "60px" }}
+                            alt="failed"
                           />
                         ) : (
                           renderCell(item[key])
@@ -45,8 +45,15 @@ function Table({ title, headers, data }) {
                     )
                 )}
                 <td className="text-center">
-                  <Button className="btn-primary w-75">Edit</Button>
-                  <Button className="btn-danger mt-2 w-75">Del</Button>
+                  <Button className="btn-primary w-75" onClick={()=> onEdit(item.id, item.type_id)}>
+                    Edit
+                  </Button>
+                  <Button
+                    className="btn-danger mt-2 w-75"
+                    onClick={()=> onDelete(item.id)}
+                  >
+                    Del
+                  </Button>
                 </td>
               </tr>
             ))}

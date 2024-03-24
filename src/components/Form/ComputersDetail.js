@@ -1,10 +1,9 @@
 import Form from "./Form";
 
-function ComputersDetailForm({ onSubmit, errors, data }) {
+function ComputersDetailForm({ onSubmit, errors, data, title }) {
   if (!data) {
     return;
   }
-  const title = "Cập nhật sản phẩm";
   const inputs = [
     {
       type: "text",

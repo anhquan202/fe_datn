@@ -1,12 +1,9 @@
 import Form from "./Form";
 
-function PhoneDetailForm({ onSubmit, errors, data }) {
+function PhoneDetailForm({ onSubmit, errors, data, title }) {
   if (!data) {
     return;
   }
-  console.log(data);
-  const title = "Cập nhật sản phẩm";
-
   const inputs = [
     {
       type: "text",
