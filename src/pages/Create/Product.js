@@ -26,7 +26,7 @@ function CreateProduct() {
       min: 1,
       value: 1
     },
-    { type: "file", name: "image", label: "Choose file:" },
+    { type: "file", name: "image", label: "Choose file:"},
     {
       type: "select",
       name: "type_id",
@@ -56,9 +56,8 @@ function CreateProduct() {
         formData
       );
       if (success) {
-        console.log(data)
         alert('Đã tạo sản phẩm thành công, bây giờ thêm chi tiết nha!');
-        navigate(`/product/createDetail?type_id=${formData.type_id}&product_id=${data.id}`);
+        navigate(`/product/createDetail?type_id=${data.type_id}&product_id=${data.id}`);
       } else {
         setErrors(error);
         const timeout = setTimeout(() => {
@@ -75,6 +74,7 @@ function CreateProduct() {
       <Form
         inputs={inputs}
         title={title}
+        data={null}
         onSubmit={handleSubmit}
         errors={errors}
       />

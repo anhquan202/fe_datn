@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import * as productService from "src/services/Product/productService";
 import AudioDetailForm from "src/components/Form/AudioDetailForm";
 import ComputersDetailForm from "src/components/Form/ComputersDetail";
-import { useNavigate } from "react-router-dom";
 import PhoneDetailForm from "src/components/Form/PhoneDetaiForm";
-import * as productService from "src/services/Product/productService";
 function CreateProductDetail() {
   const [errors, setErrors] = useState({});
   const [newProduct, setNewProduct] = useState({});
@@ -13,21 +13,23 @@ function CreateProductDetail() {
   const searchParams = new URLSearchParams(location.search);
   const typeId = parseInt(searchParams.get("type_id"));
   const productId = parseInt(searchParams.get("product_id"));
+  const title = "Tạo chi tiết sản phẩm";
+
   useEffect(() => {
     const getNewProduct = async () => {
-      const data = await productService.getDefinedProduct(productId);
+      const data = await productService.getProductById(productId);
       setNewProduct(data);
     };
     getNewProduct();
   }, [productId]);
   const handleSubmit = async (formData) => {
     try {
-      const { data, success, error } = await productService.postProductDetail(
+      const { success, error } = await productService.postProductDetail(
         typeId,
         formData
       );
       if (success) {
-        console.log(data);
+        navigate('/home')
       } else {
         setErrors(error);
         const timeout = setTimeout(() => {
@@ -47,6 +49,7 @@ function CreateProductDetail() {
           onSubmit={handleSubmit}
           errors={errors}
           data={newProduct}
+          title={title}
         />
       );
       break;
@@ -56,15 +59,17 @@ function CreateProductDetail() {
           onSubmit={handleSubmit}
           errors={errors}
           data={newProduct}
+          title={title}
         />
       );
       break;
-    case "3":
+    case 3:
       formDetail = (
         <AudioDetailForm
           onSubmit={handleSubmit}
           errors={errors}
           data={newProduct}
+          title={title}
         />
       );
       break;
