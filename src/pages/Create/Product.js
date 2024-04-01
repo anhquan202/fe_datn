@@ -62,7 +62,7 @@ function CreateProduct() {
         setErrors(error);
         const timeout = setTimeout(() => {
           setErrors([]);
-        }, 3000);
+        }, 2000);
         return () => clearTimeout(timeout);
       }
     } catch (error) {
