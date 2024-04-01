@@ -1,16 +1,15 @@
-import { useEffect, useState } from "react";
-import Table from "src/components/Table";
-import Paginate from "src/components/Paginate";
+import { useCallback, useEffect, useState } from "react";
 import * as productService from "src/services/Product/productService";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import Breadcrumb from "src/components/BreadCrumb";
-import { Link } from "react-router-dom";
+import Table from "src/components/Table";
+import TotalInvoices from "src/components/Report/TotalInvoices";
+import TotalProducts from "src/components/Report/TotalProducts";
+import TotalSales from "src/components/Report/TotalSales";
+import TotalCustomer from "src/components/Report/TotalCustomer";
+import SelectOption from "src/components/SelectOption";
 function Home() {
-  const [products, setProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const headerTitle = "Product List";
+  const [topProducts, setTopProducts] = useState([]);
+ 
+  const headerTitle = "Top Products";
   const headers = [
     "Product name",
     "Cost in",
@@ -19,46 +18,73 @@ function Home() {
     "Quantity",
     "Manufacture",
     "Type",
-    "Action",
   ];
+  const [sortOrder, setSortOrder] = useState("desc");
+  const select = [
+    {
+      type: "select",
+      name: "sort_order",
+      label: "Lọc",
+      options: [
+        { value: "desc", label: "Bán chạy" },
+        { value: "asc", label: "Khó bán" },
+      ],
+    },
+  ];
+  const handleSelectChange = (name, value) => {
+    setSortOrder(value);
+  };
   useEffect(() => {
-    const fetchApi = async () => {
-      const { data, totalPage } = await productService.getProduct(currentPage);
+    try {
+      const fetchApi = async () => {
+        const data = await productService.getTopProduct(sortOrder);
+        const modifiedProducts = data.map((product) => {
+          const { id, ...rest } = product;
+          return {
+            ...rest,
+            type: product.type.type,
+          };
+        });
+        setTopProducts(modifiedProducts);
+      };
+      fetchApi();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [sortOrder]);
+  const fetchTopProducts = useCallback(async () => {
+    try {
+      const data = await productService.getTopProduct(sortOrder);
       const modifiedProducts = data.map((product) => {
-        const { type_id, ...rest } = product;
+        const { id, ...rest } = product;
         return {
           ...rest,
           type: product.type.type,
         };
       });
-      setProducts(modifiedProducts);
-      setTotalPages(totalPage);
-      setCurrentPage(currentPage);
-    };
-    fetchApi();
-  }, [currentPage]);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
+      setTopProducts(modifiedProducts);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [sortOrder]);
+  useEffect(() => {
+    fetchTopProducts();
+  }, [fetchTopProducts]);
   return (
     <>
-      <div className="d-flex py-3">
-        <div className="container-fluid">
-          {/* <Breadcrumb /> */}
-          <div className="float-end">
-            <Link to={"/product/create"} className="btn btn-primary">
-              <FontAwesomeIcon icon={faPlus} />
-            </Link>
-          </div>
-        </div>
+      <div className="row">
+        <TotalInvoices />
+        <TotalProducts />
+        <TotalSales />
+        <TotalCustomer />
       </div>
-      <Table title={headerTitle} headers={headers} data={products} />
-      <Paginate
-        totalPages={totalPages}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
+      <Table
+        title={headerTitle}
+        headers={headers}
+        data={topProducts}
+        disabled={true}
+        select={<SelectOption data={select} onChange={handleSelectChange} />}
+        classNames={"justify-content-between align-items-center"}
       />
     </>
   );

@@ -45,6 +45,9 @@ function Form({ inputs, title, data, onSubmit, errors }) {
   }, [formData, file]);
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (typeof formData.image === 'string'){
+      dataToSend.delete('image');
+    }
     const method = dataToSend.get("_method") || "POST";
     if (method === "POST" && window.location.pathname.endsWith(`${formData.id}`)) {
       dataToSend.append("_method", "PUT");
@@ -80,7 +83,7 @@ function Form({ inputs, title, data, onSubmit, errors }) {
                         />
                         {data && (
                           <img
-                            src={`http://127.0.0.1:8000/storage/${input.image}`}
+                            src={`http://127.0.0.1:8000/storage/${input.name}`}
                             alt="Failed"
                             style={{ width: "100px", height: "100px" }}
                           />

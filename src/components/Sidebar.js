@@ -1,8 +1,6 @@
-import MenuProductDetail from "./Menu/ProductDetail";
-import MenuProduct from "./Menu/Product";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import MenuChildren from "./Menu/MenuChildren";
+import { Link } from "react-router-dom";
 function Sidebar() {
   return (
     <aside
@@ -13,9 +11,30 @@ function Sidebar() {
         <FontAwesomeIcon icon={faBars} className="me-3" />
         <span>NAVIGATION</span>
       </div>
-      <MenuProduct />
-      <MenuProductDetail />
-      <MenuChildren title={'Đơn hàng'}/>
+      <div
+        className="d-flex align-items-center justify-content-between bg-success rounded-2 px-3"
+        style={{ padding: "12px 0" }}
+      >
+        <Link to="/products" className="text-decoration-none">
+          Sản phẩm
+        </Link>
+      </div>
+      <div
+        className="d-flex align-items-center justify-content-between bg-success rounded-2 px-3  mt-3"
+        style={{ padding: "12px 0" }}
+      >
+        <Link to="/invoices" className="text-decoration-none">
+          Sản phẩm
+        </Link>
+      </div>
+      <div
+        className="d-flex align-items-center justify-content-between bg-success rounded-2 px-3 mt-3"
+        style={{ padding: "12px 0" }}
+      >
+        <Link to="/customer" className="text-decoration-none">
+          Sản phẩm
+        </Link>
+      </div>
     </aside>
   );
 }

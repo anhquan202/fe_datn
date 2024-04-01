@@ -1,14 +1,70 @@
 import Button from "./Button";
+import Modal from "react-bootstrap/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faList } from "@fortawesome/free-solid-svg-icons";
-function Table({ title, headers, data, onEdit, onDelete }) {
+import {
+  faList,
+  faPencilAlt,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import * as productServices from "src/services/Product/productService";
+import ProductDetail from "src/pages/Products/Details/ProductDetail";
+function Table({
+  title,
+  headers,
+  data,
+  onEdit,
+  onDelete,
+  disabled = false,
+  select,
+  classNames,
+}) {
+  const [productDetail, setProductDetail] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [typeId, setTypeId] = useState();
+  const [productId, setProductId] = useState();
+  const handleClickItem = async (typeId, id) => {
+    try {
+      const data = await productServices.getProductDetail(typeId, id);
+      setProductDetail(data);
+      setTypeId(typeId);
+      setProductId(id);
+      setShowModal(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const closeModal = () => {
+    setShowModal(false);
+    setProductDetail(null);
+  };
   return (
     <>
-      <div className="card-header">
-        <FontAwesomeIcon icon={faList} className="me-3" />
-        {title}
-      </div>
-      <div className="card-body" style={{ fontSize: "14px" }}>
+      <Modal show={showModal} onHide={closeModal} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Product Detail</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {productDetail && (
+            <ProductDetail typeId={typeId} id={productId}/>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <div className={`card pt-4 `} style={{ fontSize: "14px" }}>
+        <div
+          className={`card-header d-flex justify-content-between align-items-center ${classNames}`}
+        >
+          <div style={{ fontSize: 18 }}>
+            <FontAwesomeIcon icon={faList} className="me-3" />
+            {title}
+          </div>
+          {select}
+        </div>
         <table className="table table-striped table-bordered align-middle">
           <thead>
             <tr className="">
@@ -20,43 +76,55 @@ function Table({ title, headers, data, onEdit, onDelete }) {
             </tr>
           </thead>
           <tbody>
-            {data.map((item, index) => (
-              <tr key={index}>
-                {Object.keys(item).map(
-                  (key) =>
-                    key !== "id" && key !== 'type_id' && (
-                      <td
-                        key={key}
-                        style={{
-                          width: key === "name" ? "240px" : "",
-                          textAlign: key === "image" ? "center" : "",
-                        }}
-                      >
-                        {key === "image" ? (
-                          <img
-                            src={`http://127.0.0.1:8000/storage/${item[key]}` || item[key]}
-                            style={{ width: "60px", height: "60px" }}
-                            alt="failed"
-                          />
-                        ) : (
-                          renderCell(item[key])
-                        )}
-                      </td>
-                    )
-                )}
-                <td className="text-center">
-                  <Button className="btn-primary w-75" onClick={()=> onEdit(item.id, item.type_id)}>
-                    Edit
-                  </Button>
-                  <Button
-                    className="btn-danger mt-2 w-75"
-                    onClick={()=> onDelete(item.id)}
-                  >
-                    Del
-                  </Button>
-                </td>
-              </tr>
-            ))}
+            {data &&
+              data.map((item, index) => (
+                <tr
+                  key={index}
+                  onClick={() => handleClickItem(item.type_id, item.id)}
+                >
+                  {Object.keys(item).map(
+                    (key) =>
+                      key !== "id" &&
+                      key !== "type_id" && (
+                        <td
+                          key={key}
+                          style={{
+                            maxWidth: 240,
+                            width: key === ("name" && "product") ? "200px" : "",
+                            textAlign: key === "image" ? "center" : "",
+                          }}
+                        >
+                          {key === "image" ? (
+                            <img
+                              src={
+                                `http://127.0.0.1:8000/storage/${item[key]}` ||
+                                item[key]
+                              }
+                              style={{ width: "60px", height: "60px" }}
+                              alt="failed"
+                            />
+                          ) : (
+                            renderCell(item[key])
+                          )}
+                        </td>
+                      )
+                  )}
+                  <td className={`text-center ${disabled ? "d-none" : ""}`}>
+                    <Button
+                      className="btn-primary w-75"
+                      onClick={() => onEdit(item.id)}
+                    >
+                      <FontAwesomeIcon icon={faPencilAlt} />
+                    </Button>
+                    <Button
+                      className="btn-danger mt-2 w-75"
+                      onClick={() => onDelete(item.id)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </Button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
