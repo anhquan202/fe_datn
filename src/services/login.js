@@ -13,7 +13,7 @@ export const login = async (email, password) => {
     };
   } catch (error) {
     return {
-      message: error.response?.data?.error || "Unknown error", // Get error message, if available
+      error: error.response?.data?.error,
       success: false,
     };
   }
