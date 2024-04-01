@@ -1,14 +1,8 @@
-import Search from "src/components/Search";
 import Table from "src/components/Table";
-import Paginate from "src/components/Paginate";
-import * as productService from "src/services/Product/productService";
-import { useEffect, useState } from "react";
-function ComputersDetail() {
-  const [products, setProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+import { useNavigate } from "react-router-dom";
+function ComputersDetail({data, titleHeader}) {
+  const navigate = useNavigate();
   const headers = [
-    "STT",
     "Loại",
     "CPU",
     "RAM",
@@ -19,46 +13,19 @@ function ComputersDetail() {
     "Tên sản phẩm",
     "Thao tác",
   ];
-  useEffect(() => {
-    const fetchApi = async () => {
-      const { data, totalPage } = await productService.getComputersDetail(currentPage);
-      const modifiedProducts = data.map((product) => {
-        const { product_id, ...rest } = product;
-
-        const modifiedProduct = Object.entries(rest).reduce(
-          (acc, [key, value]) => {
-            acc[key] = value !== null ? value : "Trống";
-            return acc;
-          },
-          {}
-        );
-        return {
-          ...modifiedProduct,
-            product: product.product.name,
-        };
-      });
-      setProducts(modifiedProducts);
-      setCurrentPage(currentPage);
-      setTotalPages(totalPage);
-    };
-    fetchApi();
-  }, [currentPage]);
-  console.log(currentPage);
-  console.log(totalPages);
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const handleEdit = (productId) => {
+    navigate(`/product/updateDetail/${productId}?type_id=2`);
   };
+  const handleDelete = () => {};
   return (
     <div className="container">
-      <h4 className="">Danh sách sản phẩm</h4>
-
-      <div className="d-flex flex-column">
-        <Search />
-        <Table headers={headers} data={products} />
-        <Paginate
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
+      <div className="d-flex">
+        <Table
+          headers={headers}
+          data={data}
+          title={titleHeader}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
         />
       </div>
     </div>
