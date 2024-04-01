@@ -7,41 +7,30 @@ function ComputersDetailForm({ onSubmit, errors, data, title }) {
   const inputs = [
     {
       type: "text",
-      name: data.name,
-      label: "Product name",
-      placeholder: "Product name",
-      value: data.name,
+      name: "product_id",
+      label: "Product ID",
+      placeholder: "Product ID",
       disabled: true,
     },
     {
       type: "text",
-      name: "color",
-      label: "Color",
-      placeholder: "Color",
-      value: data.color,
+      name: "CPU",
+      label: "CPU",
+      placeholder: "CPU",
     },
     {
       type: "text",
       name: "ram",
       label: "Ram",
       placeholder: "Ram",
-      value: data.ram,
     },
     {
       type: "text",
-      name: "rom",
-      label: "Rom",
-      placeholder: "Rom",
-      value: data.rom,
+      name: "storage",
+      label: "Storage",
+      placeholder: "Storage",
     },
-    { type: "text", name: "camera", label: "Camera", placeholder: "Camera" , value: data.camera,},
-    {
-      type: "text",
-      name: "Screen",
-      label: "Screen",
-      placeholder: "Screen",
-      value: data.screen,
-    },
+    { type: "text", name: "graphics", label: "Graphics", placeholder: "graphics" },
     {
       type: "select",
       name: "type_id",
@@ -51,7 +40,6 @@ function ComputersDetailForm({ onSubmit, errors, data, title }) {
         { value: 2, label: "PC và laptop" },
         { value: 3, label: "Loa, tai nghe" },
       ],
-      value: data.type_id,
     },
     {
       type: "select",
@@ -66,7 +54,7 @@ function ComputersDetailForm({ onSubmit, errors, data, title }) {
   ];
   return (
     <>
-      <Form inputs={inputs} title={title} onSubmit={onSubmit} errors={errors} />
+      <Form inputs={inputs} title={title} data={data} onSubmit={onSubmit} errors={errors} />
     </>
   );
 }

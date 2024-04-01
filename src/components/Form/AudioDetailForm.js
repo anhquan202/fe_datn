@@ -1,13 +1,13 @@
 import Form from "./Form";
 
-function AudioDetailForm({onSubmit, errors, data, title}) {
+function AudioDetailForm({ onSubmit, errors, data, title }) {
   const inputs = [
     {
       type: "text",
-      name: data.id,
-      label: "Product name",
-      value: data.name,
-      disable: true
+      name: "product_id",
+      label: "Product ID",
+      placeholder: "Product ID",
+      disabled: true,
     },
     {
       type: "select",
@@ -54,17 +54,16 @@ function AudioDetailForm({onSubmit, errors, data, title}) {
       label: "Usage time",
       placeholder: "Usage time",
     },
-    { type: "text", name: "camera", label: "Camera", placeholder: "Camera" },
-    {
-      type: "text",
-      name: "Screen",
-      label: "Screen",
-      placeholder: "Screen",
-    },
   ];
   return (
     <>
-      <Form inputs={inputs} title={title} onSubmit={onSubmit} errors={errors} />
+      <Form
+        inputs={inputs}
+        title={title}
+        data={data}
+        onSubmit={onSubmit}
+        errors={errors}
+      />
     </>
   );
 }
