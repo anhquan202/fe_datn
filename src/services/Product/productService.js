@@ -1,21 +1,22 @@
 import * as request from "src/utils/request";
 //product
-export const getProduct = async (page, id) => {
+export const getProduct = async (page) => {
   try {
     const res = await request.get("products", {
       params: {
-        id,
         page,
       },
     });
     return {
       data: res.data,
       totalPage: res.last_page,
+      current_page: res.current_page
     };
   } catch (error) {
     console.log(error);
   }
 };
+
 export const getProductById = async (id) => {
   try {
     const res = await request.get(`products/${id}`);
@@ -52,10 +53,43 @@ export const putProduct = async (productId, data) => {
     };
   }
 };
+export const deleteProduct = async (id) => {
+  try {
+    const res = await request.del( `products/${id}`)
+    return {
+      res,
+      success:true
+    }
+  } catch (error) {
+    return {
+      success:false
+    }
+  }
+}
+export const getTotalProducts = async () => {
+  try {
+    const res = await request.get('totalProducts');
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+export const getTopProduct = async (sort_order) => {
+  try {
+    const res = await request.get('topProducts', {
+      params:{
+        sort_order,
+      }
+    })
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+}
 const productDetailApis = [
   { id: 1, apiUrl: "/phonedetails" },
-  { id: 2, apiUrl: "/audiodetail" },
-  { id: 3, apiUrl: "/computersdetail" },
+  { id: 2, apiUrl: "/computersdetail" },
+  { id: 3, apiUrl: "/audiodetail" },
 ];
 export const postProductDetail = async (typeID, data) => {
   const product = productDetailApis.find((item) => item.id === typeID);
@@ -90,7 +124,7 @@ export const GetProductByType = async (typeID, page) => {
 };
 export const getAudioDetail = async (page) => {
   try {
-    const res = await request.get("audiodetails", {
+    const res = await request.get("audiodetail", {
       params: {
         page,
       },
@@ -124,6 +158,19 @@ export const getComputersDetail = async (page) => {
       data: res.data,
       totalPage: res.last_page,
     };
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getProductDetail = async (typeID, productId) => {
+  const product = productDetailApis.find((item) => item.id === typeID);
+  try {
+    const res = await request.get(`${product.apiUrl}`, {
+      params: {
+        product_id: productId
+      }
+    });
+    return res.data;
   } catch (error) {
     console.log(error);
   }
