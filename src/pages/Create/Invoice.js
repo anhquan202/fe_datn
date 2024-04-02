@@ -115,7 +115,7 @@ function OrderForm() {
       console.log(error);
     }
   };
-  
+  console.log(order);
   return (
     <form className="container-fluid">
       <div className="d-flex justify-content-between flex-wrap">
@@ -137,7 +137,6 @@ function OrderForm() {
             api={"/customers/search"}
             name={"customer_id"}
             onSelected={setSelectedCustomer}
-            onKeyChange={()=>{}}
           />
           {errors && <p className="text-danger">{errors.customer_id}</p>}
         </div>

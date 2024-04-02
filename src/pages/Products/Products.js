@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Search from "src/components/Search";
@@ -16,7 +16,6 @@ function ProductsType() {
   const [fromCost, setFromCost] = useState(0);
   const [toCost, setToCost] = useState(0);
   const [type, setType] = useState("");
-  const location = useLocation();
   const navigate = useNavigate();
 
   const headerTitle = "Product List";
@@ -120,6 +119,7 @@ function ProductsType() {
             onEdit={handleEdit}
             onDelete={handleDelete}
             classNames={"col-9"}
+            dataType="product"
           />
           <div className="card " style={{ width: "23%" }}>
             <div className="card-header">
