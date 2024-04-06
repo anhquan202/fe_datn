@@ -6,6 +6,7 @@ import TotalInvoices from "src/components/Report/TotalInvoices";
 import TotalProducts from "src/components/Report/TotalProducts";
 import TotalSales from "src/components/Report/TotalSales";
 import TotalCustomer from "src/components/Report/TotalCustomer";
+import BarChart from "src/components/BarChart";
 function Home() {
   const [topProducts, setTopProducts] = useState([]);
  
@@ -43,6 +44,7 @@ function Home() {
         <TotalSales />
         <TotalCustomer />
       </div>
+      <BarChart/>
       <Table
         title={headerTitle}
         headers={headers}
