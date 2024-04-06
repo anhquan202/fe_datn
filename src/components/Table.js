@@ -8,7 +8,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import * as productServices from "src/services/Product/productService";
+import * as invoiceServices from "src/services/Invoice/invoiceService";
 import ProductDetail from "src/pages/Products/Details/ProductDetail";
+import InvoiceDetail from "src/pages/Invoice/InvoiceDetail";
 function Table({
   title,
   headers,
@@ -18,17 +20,27 @@ function Table({
   disabled = false,
   select,
   classNames,
+  dataType,
+  showDeleteButton = true,
 }) {
-  const [productDetail, setProductDetail] = useState([]);
+  const [detailData, setDetailData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [typeId, setTypeId] = useState();
-  const [productId, setProductId] = useState();
   const handleClickItem = async (typeId, id) => {
     try {
-      const data = await productServices.getProductDetail(typeId, id);
-      setProductDetail(data);
+      let data;
+      switch (dataType) {
+        case "product":
+          data = await productServices.getProductDetail(typeId, id);
+          break;
+        case "invoice":
+          data = await invoiceServices.getInvoiceDetail(id);
+          break;
+        default:
+          break;
+      }
+      setDetailData(data);
       setTypeId(typeId);
-      setProductId(id);
       setShowModal(true);
     } catch (error) {
       console.log(error);
@@ -36,7 +48,7 @@ function Table({
   };
   const closeModal = () => {
     setShowModal(false);
-    setProductDetail(null);
+    setDetailData(null);
   };
   return (
     <>
@@ -45,8 +57,11 @@ function Table({
           <Modal.Title>Product Detail</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {productDetail && (
-            <ProductDetail typeId={typeId} id={productId}/>
+          {dataType === "product" && detailData && (
+            <ProductDetail typeId={typeId} data={detailData} />
+          )}
+          {dataType === "invoice" && detailData && (
+            <InvoiceDetail data={detailData} />
           )}
         </Modal.Body>
         <Modal.Footer>
@@ -116,12 +131,14 @@ function Table({
                     >
                       <FontAwesomeIcon icon={faPencilAlt} />
                     </Button>
-                    <Button
-                      className="btn-danger mt-2 w-75"
-                      onClick={() => onDelete(item.id)}
-                    >
-                      <FontAwesomeIcon icon={faTrash} />
-                    </Button>
+                    {showDeleteButton && (
+                      <Button
+                        className="btn-danger mt-2 w-75"
+                        onClick={() => onDelete(item.id)}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </Button>
+                    )}
                   </td>
                 </tr>
               ))}
