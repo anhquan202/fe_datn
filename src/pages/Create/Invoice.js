@@ -45,7 +45,7 @@ function OrderForm() {
 
     setNewProduct({
       ...newProduct,
-      [name]: value,
+      [name]: parseInt(value),
     });
   };
   let product_id = null;
@@ -55,15 +55,32 @@ function OrderForm() {
   const addProduct = (e) => {
     e.preventDefault();
     try {
-      const unit_price = selectedProduct.cost_out;
-      const total_price = selectedProduct.cost_out * newProduct.quantity;
-      setOrder({
-        ...order,
-        details: [
-          ...order.details,
-          { ...newProduct, product_id, unit_price, total_price },
-        ],
-      });
+      const existingProductIndex = order.details.findIndex(
+        (product) => product.product_id === product_id
+      );
+
+      if (existingProductIndex !== -1) {
+        const updatedDetails = [...order.details];
+        updatedDetails[existingProductIndex].quantity += newProduct.quantity;
+        updatedDetails[existingProductIndex].total_price +=
+          selectedProduct.cost_out * newProduct.quantity;
+
+        setOrder({
+          ...order,
+          details: updatedDetails,
+        });
+      } else {
+        const unit_price = selectedProduct.cost_out;
+        const total_price = selectedProduct.cost_out * newProduct.quantity;
+
+        setOrder({
+          ...order,
+          details: [
+            ...order.details,
+            { ...newProduct, product_id, unit_price, total_price },
+          ],
+        });
+      }
       setNewProduct({
         product_id: "",
         quantity: 0,
@@ -101,7 +118,7 @@ function OrderForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const {  success, error } = await invoiceServices.postInvoice(order);
+      const { success, error } = await invoiceServices.postInvoice(order);
       if (success) {
         navigate("/invoices");
       } else {
@@ -135,7 +152,7 @@ function OrderForm() {
           <Search
             placeholder={"customer"}
             api={"/customers/search"}
-            name={"customer_id"}
+            name={"customer_name"}
             onSelected={setSelectedCustomer}
           />
           {errors && <p className="text-danger">{errors.customer_id}</p>}
