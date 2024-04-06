@@ -61,6 +61,18 @@ export const getInvoiceDetail = async (invoice_id) => {
     console.log(error);
   }
 };
+export const getTotalAmountByDay = async () => {
+  try {
+    const res = await request.get('/totalAmountByWeeks', )
+    return {
+      data: res,
+    };
+  } catch (error) {
+    return {
+      error,
+    }
+  }
+}
 export const postInvoice = async (data) => {
   try {
     const res = await request.post("/invoices", data);

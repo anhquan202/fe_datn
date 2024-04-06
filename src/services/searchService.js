@@ -1,9 +1,10 @@
 import * as request from "src/utils/request";
-export const searchData = async ( params, path) => {
+export const searchData = async (params, page, path) => {
   try {
     const res = await request.get(path, {
       params: {
         ...params,
+        page,
       },
     });
     return {
