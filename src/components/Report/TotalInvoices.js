@@ -16,7 +16,6 @@ function InvoiceCount() {
     };
     getTotalInvoices();
   }, [totalInvoices]);
-  // console.log('re-render');
   return (
     <>
       <Statistics
