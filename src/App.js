@@ -1,7 +1,7 @@
 import "~/App.css";
-import "animate.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle'
+
 import {
   BrowserRouter as Router,
   Routes,

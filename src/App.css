@@ -4,3 +4,7 @@
 li.active {
     background: #ccc;
 }
+/* hover menu componnent in sidebar */
+.hover:hover {
+    background: #929292 !important;
+}
