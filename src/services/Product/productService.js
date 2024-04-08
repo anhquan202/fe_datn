@@ -10,7 +10,7 @@ export const getProduct = async (page) => {
     return {
       data: res.data,
       totalPage: res.last_page,
-      current_page: res.current_page
+      currentPage: res.current_page
     };
   } catch (error) {
     console.log(error);
