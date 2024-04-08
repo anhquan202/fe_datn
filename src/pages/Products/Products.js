@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faPlus } from "@fortawesome/free-solid-svg-icons";
-import Search from "src/components/Search";
 import Table from "src/components/Table";
 import Paginate from "src/components/Paginate";
 import * as productService from "src/services/Product/productService";
@@ -10,12 +9,14 @@ import * as searchServices from "src/services/searchService";
 function ProductsType() {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [fromCost, setFromCost] = useState(0);
-  const [toCost, setToCost] = useState(0);
-  const [type, setType] = useState("");
+  const [dataFilter, setDataFilter] = useState({
+    product_name: "",
+    type_id: "",
+    min_cost_out: 0,
+    max_cost_out: 0,
+  });
   const navigate = useNavigate();
 
   const headerTitle = "Product List";
@@ -29,9 +30,6 @@ function ProductsType() {
     "Type",
     "Action",
   ];
-  const handleSearchKeyChange = (newKey) => {
-    setSearchValue(newKey);
-  };
 
   const handleEdit = (productId) => {
     navigate(`/product/update/${productId}`);
@@ -46,51 +44,69 @@ function ProductsType() {
       console.log(error);
     }
   };
-  const handleApiResponse = (data) => {
-    const modifiedProducts = data.data.map((product) => {
+  const handleApiResponse = (data, totalPage) => {
+    const modifiedProducts = data.map((product) => {
       const { ...rest } = product;
       return {
         ...rest,
         type: product.type.type,
       };
     });
-    setTotalPages(data.totalPage);
     setProducts(modifiedProducts);
-    setCurrentPage(data.current_page);
+    setTotalPages(totalPage);
+    setCurrentPage(currentPage);
   };
-  useEffect(() => {
+
+  const fetchProducts = async () => {
     try {
-      const fetchApi = async () => {
-        const data = await productService.getProduct(currentPage);
-        handleApiResponse(data);
-      };
-      fetchApi();
+      const { data, totalPage } = await productService.getProduct(currentPage);
+      handleApiResponse(data, totalPage);
     } catch (error) {
       console.log(error);
     }
+  };
+  useEffect(() => {
+    fetchProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, [currentPage, dataFilter]);
+  const isFilterApplied = () => {
+    // Kiểm tra xem bộ lọc có được áp dụng không
+    console.log(
+      Object.values(dataFilter).some((value) => value !== "" && value !== 0)
+    );
+    return Object.values(dataFilter).some((value) => value !== "");
+  };
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    navigate(`/products?current_page=${pageNumber}`);
+    const queryParams = new URLSearchParams();
+    queryParams.append("current_page", pageNumber);
+    if (isFilterApplied()) {
+      // Nếu có dữ liệu filter, truyền dataFilter vào queryParams
+      Object.entries(dataFilter).forEach(([key, value]) => {
+        queryParams.append(key, value);
+      });
+      navigate(`/products?${queryParams.toString()}`);
+    } else {
+      // Nếu không có dữ liệu filter, chỉ truyền currentPage
+      navigate(`/products?current_page=${pageNumber}`);
+    }
   };
+  const handleKeyChange = (newKey) => {
+    // Thực hiện các thao tác bạn muốn với giá trị mới của key
+    dataFilter.product_name = newKey;
+  };
+  console.log(dataFilter);
   const handleFilter = async () => {
     try {
       setProducts([]);
-      const filters = {
-        product_name: searchValue,
-        type_id: type,
-        min_cost_out: fromCost,
-        max_cost_out: toCost,
-      };
-      const { data, success } = await searchServices.searchData(
-        currentPage,
-        filters,
+      const { data, totalPage, success } = await searchServices.searchData(
+        dataFilter,
+        1,
         "products/search"
       );
       if (success) {
         setProducts(data);
-        handleApiResponse(data);
+        handleApiResponse(data, totalPage);
       }
     } catch (error) {
       console.log(error);
@@ -100,6 +116,13 @@ function ProductsType() {
   //handle enter-press key and select an item
   const handleSelected = (item) => {
     setSelectedProduct(item);
+  };
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setDataFilter({
+      ...dataFilter,
+      [name]: value,
+    });
   };
   return (
     <div className="container">
@@ -129,23 +152,22 @@ function ProductsType() {
             <div className="card-body">
               <div className="mb-3">
                 <label> Name</label>
-                <Search
-                  placeholder={"Search products..."}
-                  name={"product_name"}
-                  api={"products/search"}
-                  onSelected={handleSelected}
-                  onKeyChange={handleSearchKeyChange}
+                <input
+                  className="form-control"
+                  type="text"
+                  name="product_name"
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="mb-3">
-                <label for="input-model" className="form-label">
+                <label htmlFor="input-model" className="form-label">
                   Type
                 </label>{" "}
                 <select
-                  name="filter_type"
+                  name="type_id"
                   id="input-status"
                   className="form-select"
-                  onChange={(e) => setType(e.target.value)}
+                  onChange={handleInputChange}
                 >
                   <option value="1">Điện thoại</option>
                   <option value="2">PC và laptop</option>
@@ -154,33 +176,32 @@ function ProductsType() {
               </div>
 
               <div className="mb-3">
-                <label for="input-price" className="form-label">
+                <label htmlFor="input-price" className="form-label">
                   Price
                 </label>{" "}
                 <div className="d-flex">
                   <input
                     type="text"
-                    name="from_price"
+                    name="min_cost_out"
                     placeholder="Price"
                     id="input-price"
                     className="form-control"
-                    onChange={(e) => setFromCost(e.target.value)}
+                    onChange={handleInputChange}
                   />
                   <input
                     type="text"
-                    name="to_price"
+                    name="max_cost_out"
                     placeholder="Price"
                     id="input-price"
                     className="form-control"
-                    onChange={(e) => setToCost(e.target.value)}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
               <div className="text-end">
                 <button
                   type="button"
-                  id="button-filter"
-                  className="btn btn-light"
+                  className="btn btn-primary"
                   onClick={handleFilter}
                 >
                   Filter
