@@ -22,6 +22,7 @@ function Table({
   classNames,
   dataType,
   showDeleteButton = true,
+  showEditButton = true,
 }) {
   const [detailData, setDetailData] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -125,12 +126,14 @@ function Table({
                       )
                   )}
                   <td className={`text-center ${disabled ? "d-none" : ""}`}>
-                    <Button
-                      className="btn-primary w-75"
-                      onClick={() => onEdit(item.id)}
-                    >
-                      <FontAwesomeIcon icon={faPencilAlt} />
-                    </Button>
+                    {showEditButton && (
+                      <Button
+                        className="btn-primary w-75"
+                        onClick={() => onEdit(item.id)}
+                      >
+                        <FontAwesomeIcon icon={faPencilAlt} />
+                      </Button>
+                    )}
                     {showDeleteButton && (
                       <Button
                         className="btn-danger mt-2 w-75"

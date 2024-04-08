@@ -1,8 +1,7 @@
-import { Chart as Chartjs } from "chart.js/auto";
 import { useEffect, useState } from "react";
+import { Chart as Chartjs } from "chart.js/auto";
 import { Bar } from "react-chartjs-2";
 import * as invoiceServices from "src/services/Invoice/invoiceService";
-import Button from "./Button";
 function BarChart() {
   const [data, setData] = useState([]);
   useEffect(() => {
