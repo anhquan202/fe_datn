@@ -43,7 +43,8 @@ function Invoice() {
     const { details, customer, ...rest } = invoice;
     return rest; // Trả về đối tượng chỉ chứa các thông tin không phải details và customer
   });
-  const handleEdit = (id) => {
+  const handleEdit = (event, id) => {
+    event.stopPropagation();
     navigate(`/invoice/updateStatus/${id}`)
   };
   return (

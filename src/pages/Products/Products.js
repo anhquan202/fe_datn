@@ -8,14 +8,13 @@ import * as productService from "src/services/Product/productService";
 import * as searchServices from "src/services/searchService";
 function ProductsType() {
   const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [dataFilter, setDataFilter] = useState({
     product_name: "",
     type_id: "",
-    min_cost_out: 0,
-    max_cost_out: 0,
+    min_cost_out: "",
+    max_cost_out: "",
   });
   const navigate = useNavigate();
 
@@ -31,10 +30,13 @@ function ProductsType() {
     "Action",
   ];
 
-  const handleEdit = (productId) => {
+  const handleEdit = (event, productId) => {
+    event.stopPropagation();
     navigate(`/product/update/${productId}`);
   };
-  const handleDelete = async (id) => {
+  const handleDelete = async (event, id) => {
+    event.stopPropagation();
+
     try {
       const { success } = await productService.deleteProduct(id);
       if (success) {
@@ -56,11 +58,21 @@ function ProductsType() {
     setTotalPages(totalPage);
     setCurrentPage(currentPage);
   };
-
   const fetchProducts = async () => {
     try {
-      const { data, totalPage } = await productService.getProduct(currentPage);
-      handleApiResponse(data, totalPage);
+      if (
+        dataFilter.product_name ||
+        dataFilter.type_id ||
+        dataFilter.min_cost_out ||
+        dataFilter.max_cost_out
+      ) {
+        await handleFilter();
+      } else {
+        const { data, totalPage } = await productService.getProduct(
+          currentPage
+        );
+        handleApiResponse(data, totalPage);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -69,39 +81,15 @@ function ProductsType() {
     fetchProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, dataFilter]);
-  const isFilterApplied = () => {
-    // Kiểm tra xem bộ lọc có được áp dụng không
-    console.log(
-      Object.values(dataFilter).some((value) => value !== "" && value !== 0)
-    );
-    return Object.values(dataFilter).some((value) => value !== "");
-  };
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    const queryParams = new URLSearchParams();
-    queryParams.append("current_page", pageNumber);
-    if (isFilterApplied()) {
-      // Nếu có dữ liệu filter, truyền dataFilter vào queryParams
-      Object.entries(dataFilter).forEach(([key, value]) => {
-        queryParams.append(key, value);
-      });
-      navigate(`/products?${queryParams.toString()}`);
-    } else {
-      // Nếu không có dữ liệu filter, chỉ truyền currentPage
-      navigate(`/products?current_page=${pageNumber}`);
-    }
+    navigate(`/products?current_page=${pageNumber}`);
   };
-  const handleKeyChange = (newKey) => {
-    // Thực hiện các thao tác bạn muốn với giá trị mới của key
-    dataFilter.product_name = newKey;
-  };
-  console.log(dataFilter);
   const handleFilter = async () => {
     try {
-      setProducts([]);
       const { data, totalPage, success } = await searchServices.searchData(
         dataFilter,
-        1,
+        currentPage,
         "products/search"
       );
       if (success) {
@@ -112,17 +100,12 @@ function ProductsType() {
       console.log(error);
     }
   };
-
-  //handle enter-press key and select an item
-  const handleSelected = (item) => {
-    setSelectedProduct(item);
-  };
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setDataFilter({
-      ...dataFilter,
+    setDataFilter((prevDataFilter) => ({
+      ...prevDataFilter,
       [name]: value,
-    });
+    }));
   };
   return (
     <div className="container">
@@ -162,13 +145,14 @@ function ProductsType() {
               <div className="mb-3">
                 <label htmlFor="input-model" className="form-label">
                   Type
-                </label>{" "}
+                </label>
                 <select
                   name="type_id"
                   id="input-status"
                   className="form-select"
                   onChange={handleInputChange}
                 >
+                  <option>Loại sản phẩm</option>
                   <option value="1">Điện thoại</option>
                   <option value="2">PC và laptop</option>
                   <option value="3">Loa, tai nghe</option>

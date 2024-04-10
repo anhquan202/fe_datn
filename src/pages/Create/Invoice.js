@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import * as invoiceServices from "src/services/Invoice/invoiceService";
 import Button from "src/components/Button";
 import Search from "src/components/Search";
 import Table from "src/components/Table";
-import { useNavigate } from "react-router-dom";
-
+import Modal from "react-bootstrap/Modal";
 function OrderForm() {
+  const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [errors, setErrors] = useState([]);
@@ -23,6 +24,9 @@ function OrderForm() {
     unit_price: 0,
     total_price: 0,
   });
+  const closeModal = () => {
+    setShowModal(false);
+  };
   const navigate = useNavigate();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -120,6 +124,7 @@ function OrderForm() {
     try {
       const { success, error } = await invoiceServices.postInvoice(order);
       if (success) {
+        alert("Đơn hàng được tạo thành công");
         navigate("/invoices");
       } else {
         setErrors(error);
@@ -132,92 +137,127 @@ function OrderForm() {
       console.log(error);
     }
   };
-  console.log(order);
+  const handleDeleteItemCart = (id) => {
+    setShowModal(true);
+    const index = order.details.findIndex(
+      (product) => product.product_id === id
+    );
+    if (index !== -1) {
+      // Tạo một bản sao của mảng details
+      const updatedDetails = [...order.details];
+      // Loại bỏ sản phẩm khỏi mảng
+      updatedDetails.splice(index, 1);
+      // Cập nhật lại order với details mới
+      setOrder({
+        ...order,
+        details: updatedDetails,
+      });
+    }
+  };
   return (
-    <form className="container-fluid">
-      <div className="d-flex justify-content-between flex-wrap">
-        <div className="mb-3 w-100">
-          <label className="form-label">Address:</label>
-          <input
-            className="form-control"
-            type="text"
-            name="receiver_address"
-            value={order.address}
-            onChange={handleInputChange}
-          />
-          {errors && <p className="text-danger">{errors.receiver_address}</p>}
+    <>
+      {/* <Modal show={showModal} onHide={closeModal} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Product Detail</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <p>Bạn có chắc chắn muốn xóa sản phẩm này không</p>      
+            <Button onClick={closeModal}>Không</Button>
+            <Button onClick={""}>Có</Button>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal> */}
+      <form className="container-fluid">
+        <div className="d-flex justify-content-between flex-wrap">
+          <div className="mb-3 w-100">
+            <label className="form-label">Address:</label>
+            <input
+              className="form-control"
+              type="text"
+              name="receiver_address"
+              value={order.address}
+              onChange={handleInputChange}
+            />
+            {errors && <p className="text-danger">{errors.receiver_address}</p>}
+          </div>
+          <div className="mb-3 col-4">
+            <label className="form-label">Customer:</label>
+            <Search
+              placeholder={"customer"}
+              api={"/customers/search"}
+              name={"customer_name"}
+              onSelected={setSelectedCustomer}
+            />
+            {errors && <p className="text-danger">{errors.customer_id}</p>}
+          </div>
+          <div className="mb-3 w-25">
+            <label className="form-label">Phone:</label>
+            <input
+              className="form-control"
+              type="text"
+              name="receiver_phone"
+              value={order.phone}
+              onChange={handleInputChange}
+            />
+            {errors && <p className="text-danger">{errors.receiver_phone}</p>}
+          </div>
+          <div className="mb-3 w-25">
+            <label className="form-label">Payment Method:</label>
+            <select
+              className="form-select"
+              aria-label="Default select example"
+              name="payment_method"
+              value={order.payment_method}
+              onChange={handleInputChange}
+            >
+              <option>Tiền mặt</option>
+              <option>Chuyển khoản</option>
+            </select>
+          </div>
         </div>
-        <div className="mb-3 col-4">
-          <label className="form-label">Customer:</label>
+        <div className="d-flex justify-content-between align-items-end py-3">
           <Search
-            placeholder={"customer"}
-            api={"/customers/search"}
-            name={"customer_name"}
-            onSelected={setSelectedCustomer}
+            placeholder={"Tim kiem san pham..."}
+            api={"products/search"}
+            name={"product_name"}
+            className={"w-50"}
+            onSelected={setSelectedProduct}
           />
-          {errors && <p className="text-danger">{errors.customer_id}</p>}
-        </div>
-        <div className="mb-3 w-25">
-          <label className="form-label">Phone:</label>
-          <input
-            className="form-control"
-            type="text"
-            name="receiver_phone"
-            value={order.phone}
-            onChange={handleInputChange}
-          />
-          {errors && <p className="text-danger">{errors.receiver_phone}</p>}
-        </div>
-        <div className="mb-3 w-25">
-          <label className="form-label">Payment Method:</label>
-          <select
-            className="form-select"
-            aria-label="Default select example"
-            name="payment_method"
-            value={order.payment_method}
-            onChange={handleInputChange}
-          >
-            <option>Tiền mặt</option>
-            <option>Chuyển khoản</option>
-          </select>
-        </div>
-      </div>
-      <div className="d-flex justify-content-between align-items-end py-3">
-        <Search
-          placeholder={"Tim kiem san pham..."}
-          api={"products/search"}
-          name={"product_name"}
-          className={"w-50"}
-          onSelected={setSelectedProduct}
-        />
 
-        <div className="d-flex align-items-end">
-          <label className="me-1">Quantity:</label>
-          <input
-            type="number"
-            name="quantity"
-            className="form-control"
-            value={newProduct.quantity}
-            onChange={handleProductInputChange}
-          />
+          <div className="d-flex align-items-end">
+            <label className="me-1">Quantity:</label>
+            <input
+              type="number"
+              name="quantity"
+              className="form-control"
+              value={newProduct.quantity}
+              onChange={handleProductInputChange}
+            />
+          </div>
+          {/* {errors && <p className="text-danger">{errors.quantity}</p>} */}
+          <Button className={"btn-primary"} onClick={addProduct}>
+            Add product
+          </Button>
         </div>
-        {/* {errors && <p className="text-danger">{errors.quantity}</p>} */}
-        <Button className={"btn-primary"} onClick={addProduct}>
-          Add product
+        <div>
+          <Table
+            title={"Các sản phẩm được chọn"}
+            headers={headers}
+            data={order.details}
+            showEditButton={false}
+            onDelete={(id) => handleDeleteItemCart(id)}
+          />
+          <p>Total Price: {order.total_amount}</p>
+        </div>
+        <Button className={"btn-primary"} onClick={handleSubmit}>
+          Submit
         </Button>
-      </div>
-      <div>
-        <Table
-          title={"Các sản phẩm được chọn"}
-          headers={headers}
-          data={order.details}
-        />
-        <p>Total Price: {order.total_amount}</p>
-      </div>
-      <Button className={"btn-primary"} onClick={handleSubmit}>
-        Submit
-      </Button>
-    </form>
+      </form>
+    </>
   );
 }
 

@@ -18,7 +18,7 @@ function BarChart() {
   return (
     <>
       <div className="bg-primay">
-        <p>Statistics</p>
+        <h4 className="ms-3">Statistics Sales</h4>
         <Bar
           data={{
             labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], // Sử dụng ngày bán hàng làm nhãn

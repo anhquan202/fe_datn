@@ -55,7 +55,7 @@ function Table({
     <>
       <Modal show={showModal} onHide={closeModal} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Product Detail</Modal.Title>
+          <Modal.Title>Informaiton Detail</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {dataType === "product" && detailData && (
@@ -129,7 +129,7 @@ function Table({
                     {showEditButton && (
                       <Button
                         className="btn-primary w-75"
-                        onClick={() => onEdit(item.id)}
+                        onClick={(e) => onEdit(e,item.id)}
                       >
                         <FontAwesomeIcon icon={faPencilAlt} />
                       </Button>
@@ -137,7 +137,7 @@ function Table({
                     {showDeleteButton && (
                       <Button
                         className="btn-danger mt-2 w-75"
-                        onClick={() => onDelete(item.id)}
+                        onClick={(e) => onDelete(item.id)}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </Button>
