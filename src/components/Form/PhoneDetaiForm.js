@@ -7,7 +7,7 @@ function PhoneDetailForm({ onSubmit, errors, data, title }) {
   const inputs = [
     {
       type: "text",
-      name: "product_id",
+      name: "id",
       label: "Product ID",
       placeholder: "Product ID",
       disabled:true
