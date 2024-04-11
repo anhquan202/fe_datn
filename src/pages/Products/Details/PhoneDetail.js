@@ -16,7 +16,6 @@ function PhoneDetail({ data, titleHeader }) {
   const handleEdit = (productId) => {
     navigate(`/product/updateDetail/${productId}?type_id=1`);
   };
-  const handleDelete = () => {};
   return (
     <div className="d-flex">
       <Table
@@ -24,7 +23,7 @@ function PhoneDetail({ data, titleHeader }) {
         data={data}
         title={titleHeader}
         onEdit={handleEdit}
-        onDelete={handleDelete}
+        showDeleteButton={false}
       />
     </div>
   );

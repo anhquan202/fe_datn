@@ -19,7 +19,6 @@ function AudioDetails({ data, titleHeader }) {
     navigate(`/product/updateDetail/${productId}?type_id=3`);
   };
 
-  const handleDelete = () => {};
   return (
     <div className="container">
       <div className="d-flex ">
@@ -28,7 +27,7 @@ function AudioDetails({ data, titleHeader }) {
           data={data}
           title={titleHeader}
           onEdit={handleEdit}
-          onDelete={handleDelete}
+          showDeleteButton={false}
         />
       </div>
     </div>

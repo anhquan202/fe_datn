@@ -1,6 +1,6 @@
 import Table from "src/components/Table";
 import { useNavigate } from "react-router-dom";
-function ComputersDetail({data, titleHeader}) {
+function ComputersDetail({ data, titleHeader }) {
   const navigate = useNavigate();
   const headers = [
     "Loại",
@@ -16,7 +16,6 @@ function ComputersDetail({data, titleHeader}) {
   const handleEdit = (productId) => {
     navigate(`/product/updateDetail/${productId}?type_id=2`);
   };
-  const handleDelete = () => {};
   return (
     <div className="container">
       <div className="d-flex">
@@ -25,7 +24,7 @@ function ComputersDetail({data, titleHeader}) {
           data={data}
           title={titleHeader}
           onEdit={handleEdit}
-          onDelete={handleDelete}
+          showDeleteButton={false}
         />
       </div>
     </div>
