@@ -25,14 +25,14 @@ function BarChart() {
             datasets: [
               {
                 label: 'Last week',
-                data: data.map((item) => item.total_amount_sum_lastweek),
+                data: data.length > 0 && data.map((item) => item.total_amount_sum_lastweek),
                 backgroundColor: "rgba(255, 99, 132, 0.2)",
                 borderColor: "rgba(255, 99, 132, 1)",
                 borderWidth: 1,
               },
               {
                 label: "This Week",
-                data: data.map((item) => item.total_amount_sum_thisweek),
+                data: data.length > 0 && data.map((item) => item.total_amount_sum_thisweek),
                 backgroundColor: "rgba(54, 162, 235, 0.2)",
                 borderColor: "rgba(54, 162, 235, 1)",
                 borderWidth: 1,
