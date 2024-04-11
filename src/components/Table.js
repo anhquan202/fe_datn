@@ -23,6 +23,7 @@ function Table({
   dataType,
   showDeleteButton = true,
   showEditButton = true,
+  showModalDelete
 }) {
   const [detailData, setDetailData] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -137,7 +138,10 @@ function Table({
                     {showDeleteButton && (
                       <Button
                         className="btn-danger mt-2 w-75"
-                        onClick={(e) => onDelete(item.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          showModalDelete(item.id);
+                        }}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </Button>
