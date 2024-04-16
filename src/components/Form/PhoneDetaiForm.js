@@ -1,16 +1,13 @@
 import Form from "./Form";
 
 function PhoneDetailForm({ onSubmit, errors, data, title }) {
-  if (!data) {
-    return;
-  }
   const inputs = [
     {
       type: "text",
       name: "id",
       label: "Product ID",
       placeholder: "Product ID",
-      disabled:true
+      disabled: true,
     },
     {
       type: "text",
@@ -42,21 +39,32 @@ function PhoneDetailForm({ onSubmit, errors, data, title }) {
       label: "Screen",
       placeholder: "Screen",
     },
-    
+
     {
       type: "select",
       name: "operating_ystem",
       label: "Operating System",
       options: [
-        { value: 1, label: "Apple" },
-        { value: 2, label: "Samsung" },
-        { value: 3, label: "Xiaomi" },
+        { value: "iOS 10", label: "iOS 10" },
+        { value: "iOS 11", label: "iOS 11" },
+        { value: "iOS 12", label: "iOS 12" },
+        { value: "iOS 13", label: "iOS 13" },
+        { value: "iOS 14", label: "iOS 14" },
+        { value: "iOS 15", label: "iOS 15" },
+        { value: "iOS 16", label: "iOS 60" },
+        { value: "Android", label: "Android" },
       ],
     },
   ];
   return (
     <>
-      <Form inputs={inputs} title={title} data={data} onSubmit={onSubmit} errors={errors} />
+      <Form
+        inputs={inputs}
+        title={title}
+        data={data}
+        onSubmit={onSubmit}
+        errors={errors}
+      />
     </>
   );
 }

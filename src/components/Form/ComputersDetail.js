@@ -1,9 +1,6 @@
 import Form from "./Form";
 
 function ComputersDetailForm({ onSubmit, errors, data, title }) {
-  if (!data) {
-    return;
-  }
   const inputs = [
     {
       type: "text",
