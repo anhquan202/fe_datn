@@ -22,7 +22,6 @@ function TotalSales() {
         data={totalSales.toLocaleString()}
         title={title}
         icon={faProductHunt}
-        to={""}
       />
     </>
   );

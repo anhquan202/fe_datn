@@ -22,7 +22,6 @@ function TotalProducts() {
         data={totalProducts}
         title={title}
         icon={faProductHunt}
-        to={""}
       />
     </>
   );

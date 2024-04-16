@@ -22,7 +22,6 @@ function TotalCustomer() {
         data={totalCustomer}
         title={title}
         icon={faUser}
-        to={""}
       />
     </>
   );

@@ -22,7 +22,6 @@ function InvoiceCount() {
         data={totalInvoices.toLocaleString()}
         title={title}
         icon={faShoppingCart}
-        to={""}
       />
     </>
   );
