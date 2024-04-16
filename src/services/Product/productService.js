@@ -10,7 +10,7 @@ export const getProduct = async (page) => {
     return {
       data: res.data,
       totalPage: res.last_page,
-      currentPage: res.current_page
+      currentPage: res.current_page,
     };
   } catch (error) {
     console.log(error);
@@ -55,37 +55,37 @@ export const putProduct = async (productId, data) => {
 };
 export const deleteProduct = async (id) => {
   try {
-    const res = await request.del( `products/${id}`)
+    const res = await request.del(`products/${id}`);
     return {
       res,
-      success:true
-    }
+      success: true,
+    };
   } catch (error) {
     return {
-      success:false
-    }
+      success: false,
+    };
   }
-}
+};
 export const getTotalProducts = async () => {
   try {
-    const res = await request.get('totalProducts');
+    const res = await request.get("totalProducts");
     return res;
   } catch (error) {
     console.log(error);
   }
-}
+};
 export const getTopProduct = async (sort_order) => {
   try {
-    const res = await request.get('topProducts', {
-      params:{
+    const res = await request.get("topProducts", {
+      params: {
         sort_order,
-      }
-    })
+      },
+    });
     return res.data;
   } catch (error) {
     return error;
   }
-}
+};
 const productDetailApis = [
   { id: 1, apiUrl: "/phonedetails" },
   { id: 2, apiUrl: "/computersdetail" },
@@ -167,8 +167,8 @@ export const getProductDetail = async (typeID, productId) => {
   try {
     const res = await request.get(`${product.apiUrl}`, {
       params: {
-        product_id: productId
-      }
+        product_id: productId,
+      },
     });
     return res.data;
   } catch (error) {

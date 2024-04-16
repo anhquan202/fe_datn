@@ -82,7 +82,7 @@ export const postInvoice = async (data) => {
     };
   } catch (error) {
     return {
-      error: error.response.data.error,
+      error: error.response.data.error || error.response.data,
       success: false,
     };
   }
