@@ -8,19 +8,20 @@ function UpdateProductDetail() {
   const { productId } = useParams();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const typeId = parseInt(searchParams.get("type_id"));
-  const [product, setProduct] = useState();
+  let typeId = searchParams.get("type_id");
+  typeId = parseInt(typeId);
+  const [product, setProduct] = useState([]);
   const [errors, setErrors] = useState({});
   useEffect(() => {
     try {
       const getProductById = async () => {
         const data = await productService.getProductDetail(typeId, productId);
-        if (data && data.product) {
+        if (data[0] && data[0].product) {
           // Thêm key mới productName vào product object
-          data.product_id = data.product.id;
+          data[0].product_id = data[0].product.id;
           // Xóa key name nếu không cần thiết
-          delete data.product;
-          setProduct(data);
+          delete data[0].product;
+          setProduct(data[0]);
         }
       };
       getProductById();
@@ -28,9 +29,6 @@ function UpdateProductDetail() {
       console.log(error);
     }
   }, [productId, typeId]);
-  if (!product) {
-    return null;
-  }
   const handleSubmit = async (formData) => {
     try {
       const { data, sucees, error } = await productService.postProductDetail(
@@ -46,6 +44,7 @@ function UpdateProductDetail() {
       console.log(error);
     }
   };
+  const title = "Cập nhật thông tin chi tiết";
   let formUpdate = null;
   switch (typeId) {
     case 1:
@@ -54,6 +53,7 @@ function UpdateProductDetail() {
           onSubmit={handleSubmit}
           errors={errors}
           data={product}
+          title={title}
         />
       );
       break;
@@ -63,6 +63,7 @@ function UpdateProductDetail() {
           onSubmit={handleSubmit}
           errors={errors}
           data={product}
+          title={title}
         />
       );
       break;
@@ -72,6 +73,7 @@ function UpdateProductDetail() {
           onSubmit={handleSubmit}
           errors={errors}
           data={product}
+          title={title}
         />
       );
       break;

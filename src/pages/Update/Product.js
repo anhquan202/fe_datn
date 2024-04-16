@@ -67,9 +67,11 @@ function UpdateProduct() {
       name: "manufacture",
       label: "Manufacture",
       options: [
-        { value: 1, label: "Apple" },
-        { value: 2, label: "Samsung" },
-        { value: 3, label: "Xiaomi" },
+        { value: 'Apple', label: "Apple" },
+        { value: 'Samsung', label: "Samsung" },
+        { value: 'Xiaomi', label: "Xiaomi" },
+        { value: 'Dell', label: "Dell" },
+        { value: 'Asus', label: "Asus" },
       ],
     },
   ];
@@ -99,7 +101,7 @@ function UpdateProduct() {
   const handleConfirmation = (confirmed) => {
     if (confirmed) {
       navigate(
-        `/product/updateDetail/${product.id}?type_id=${product.type_id}`
+        `/product/updateDetail/${productId}?type_id=${product.type_id}`
       );
     } else {
       navigate(`/products`);
@@ -118,7 +120,7 @@ function UpdateProduct() {
       {showModal && (
         <Modal show={showModal} onHide={closeModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Update prduct Detail</Modal.Title>
+            <Modal.Title>Update product detail</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             Bạn đã sửa thành công thông tin chung, hãy chọn 'No' nếu không muốn
@@ -127,11 +129,16 @@ function UpdateProduct() {
           <Modal.Footer>
             <Button
               variant="secondary"
+              className={"btn-danger"}
               onClick={() => handleConfirmation(false)}
             >
               No
             </Button>
-            <Button variant="primary" onClick={() => handleConfirmation(true)}>
+            <Button
+              variant="primary"
+              className={"btn-primary"}
+              onClick={() => handleConfirmation(true)}
+            >
               Yes
             </Button>
           </Modal.Footer>

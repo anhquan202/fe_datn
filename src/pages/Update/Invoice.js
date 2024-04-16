@@ -43,6 +43,7 @@ function UpdateStatusInvoice() {
             <label className="form-label">Invoice ID:</label>
             <input
               className="form-control"
+              name="id"
               disabled
               type="text"
               value={invoiceById.id}
