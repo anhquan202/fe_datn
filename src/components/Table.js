@@ -140,7 +140,8 @@ function Table({
                         className="btn-danger mt-2 w-75"
                         onClick={(e) => {
                           e.stopPropagation();
-                          showModalDelete(item.id);
+                          e.preventDefault();
+                          showModalDelete(item.id || item.product_id);
                         }}
                       >
                         <FontAwesomeIcon icon={faTrash} />
