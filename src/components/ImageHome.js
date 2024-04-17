@@ -9,7 +9,7 @@ function ImageHome() {
       style={{ width: "60px", height: "60px" }}
       alt="Logo"
       onClick={() => {
-        navigate("/");
+        navigate("/home");
       }}
     />
   );
