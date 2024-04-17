@@ -47,7 +47,7 @@ function Login() {
                   Please enter your login details.
                 </div>
                 <div className="card-body">
-                  <form id="form-login" onSubmit={handleSubmit}>
+                  <form id="form-login" >
                     <div className="row mb-3">
                       <label className="form-label">Username</label>
                       <div className="input-group">
@@ -95,7 +95,7 @@ function Login() {
                       <p className="text-danger">{errors}</p>
                     )}
                     <div className="text-end">
-                      <Button className={"btn-primary"}>
+                      <Button className={"btn-primary"} onClick={handleSubmit}>
                         <FontAwesomeIcon icon={faKey} />
                         Login
                       </Button>
