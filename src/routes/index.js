@@ -2,7 +2,7 @@ import Home from "../pages/Home/Home";
 import Customer from "../pages/Custmomer/Customer";
 import Products from "src/pages/Products/Products";
 import { AudioDetails, ComputerDetails, PhoneDetails } from "src/pages/Products/Details";
-import Login from "src/pages/Login/login";
+import Login from "src/pages/Login/Login";
 import DefaultLayout from "../layouts/DefautLayout";
 import CreateProduct from "src/pages/Create/Product";
 import CreateProductDetail from "src/pages/Create/ProductDetail";
