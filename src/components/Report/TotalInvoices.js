@@ -4,7 +4,7 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import Statistics from "./Count";
 function InvoiceCount() {
   const [totalInvoices, setTotalInvoices] = useState(0);
-  const title = "Total invoices";
+  const title = "Hóa đơn";
   useEffect(() => {
     const getTotalInvoices = async () => {
       try {

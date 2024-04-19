@@ -16,7 +16,7 @@ function Table({
   headers,
   data,
   onEdit,
-  onDelete,
+  styleCss,
   disabled = false,
   select,
   classNames,
@@ -72,7 +72,7 @@ function Table({
           </Button>
         </Modal.Footer>
       </Modal>
-      <div className={`card pt-4 `} style={{ fontSize: "14px" }}>
+      <div className={`card pt-4 ${styleCss}`} style={{ fontSize: "14px" }}>
         <div
           className={`card-header d-flex justify-content-between align-items-center ${classNames}`}
         >

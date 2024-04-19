@@ -4,7 +4,7 @@ import Statistics from "./Count";
 import { faProductHunt } from "@fortawesome/free-brands-svg-icons";
 function TotalProducts() {
   const [totalProducts, setTotalProducts] = useState(0);
-  const title = "Total Products";
+  const title = "Sản phẩm";
   useEffect(() => {
     const getTotalProducts = async () => {
       try {

@@ -9,24 +9,24 @@ import TotalCustomer from "src/components/Report/TotalCustomer";
 import BarChart from "src/components/BarChart";
 function Home() {
   const [topProducts, setTopProducts] = useState([]);
- 
-  const headerTitle = "Top Products";
+
+  const headerTitle = "Sản phẩm bán chạy";
   const headers = [
-    "Product name",
-    "Cost in",
-    "Cost out",
-    "Image",
-    "Manufacture",
-    "Total",
+    "Tên sản phẩm",
+    "Giá nhập",
+    "Giá bán",
+    "Ảnh",
+    "Nhà sản xuất",
+    "Lần mua",
   ];
   const fetchTopProducts = useCallback(async () => {
     try {
       const data = await invoiceService.getHotProduct();
-     const modifiedProducts = data.map((product) => {
+      const modifiedProducts = data.map((product) => {
         const { quantity, ...rest } = product;
         return {
           ...rest,
-        }; 
+        };
       });
       setTopProducts(modifiedProducts);
     } catch (error) {
@@ -44,14 +44,17 @@ function Home() {
         <TotalSales />
         <TotalCustomer />
       </div>
-      <BarChart/>
-      <Table
-        title={headerTitle}
-        headers={headers}
-        data={topProducts}
-        disabled={true}
-        classNames={"justify-content-between align-items-center"}
-      />
+      <div className="d-flex">
+        <Table
+          title={headerTitle}
+          headers={headers}
+          data={topProducts}
+          disabled={true}
+          styleCss={'w-50 pe-3'}
+        />
+
+        <BarChart />
+      </div>
     </>
   );
 }

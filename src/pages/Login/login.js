@@ -43,7 +43,7 @@ function Login() {
             <div className="col-sm-4 col-md-6">
               <div className="card">
                 <div className="card-header">
-                  <FontAwesomeIcon icon={faLock} />
+                  <FontAwesomeIcon icon={faLock} className="me-3" />
                   Please enter your login details.
                 </div>
                 <div className="card-body">

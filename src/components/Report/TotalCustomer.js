@@ -4,7 +4,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Statistics from "./Count";
 function TotalCustomer() {
   const [totalCustomer, setTotalCustomer] = useState(0);
-  const title = "Total Customer";
+  const title = "Khách hàng";
   useEffect(() => {
     const getTotalCustomer = async () => {
       try {

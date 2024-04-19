@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import * as invoiceServices from "src/services/Invoice/invoiceService";
 import Statistics from "./Count";
-import { faProductHunt } from "@fortawesome/free-brands-svg-icons";
+import { faCoins } from "@fortawesome/free-solid-svg-icons";
 function TotalSales() {
   const [totalSales, setTotalSales] = useState(0);
-  const title = "Total Sales";
+  const title = "Doanh số";
   useEffect(() => {
     const getTotalSales = async () => {
       try {
@@ -21,7 +21,7 @@ function TotalSales() {
       <Statistics
         data={totalSales.toLocaleString()}
         title={title}
-        icon={faProductHunt}
+        icon={faCoins}
       />
     </>
   );
