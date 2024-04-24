@@ -45,11 +45,14 @@ function Form({ inputs, title, data, onSubmit, errors }) {
   }, [formData, file]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (typeof formData.image === 'string'){
-      dataToSend.delete('image');
+    if (typeof formData.image === "string") {
+      dataToSend.delete("image");
     }
     const method = dataToSend.get("_method") || "POST";
-    if (method === "POST" && window.location.pathname.endsWith(`${formData.id}`)) {
+    if (
+      method === "POST" &&
+      window.location.pathname.endsWith(`${formData.id}`)
+    ) {
       dataToSend.append("_method", "PUT");
     }
     onSubmit(dataToSend);
@@ -83,7 +86,11 @@ function Form({ inputs, title, data, onSubmit, errors }) {
                         />
                         {data && (
                           <img
-                            src={`http://127.0.0.1:8000/storage/${input.name}`}
+                            src={
+                              inputs.image
+                                ? `http://127.0.0.1:8000/storage/${input.name} `
+                                : `http://127.0.0.1:8000/storage/${data.image}`
+                            }
                             alt="Failed"
                             style={{ width: "100px", height: "100px" }}
                           />

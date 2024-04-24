@@ -8,29 +8,33 @@ function CreateProduct() {
     {
       type: "text",
       name: "name",
-      label: "Product name",
-      placeholder: "Product name",
+      label: "Tên sản phẩm",
+      placeholder: "Samsung Galaxy...",
     },
-    { type: "text", name: "cost_in", label: "Cost in", placeholder: "Cost in" },
+    {
+      type: "text",
+      name: "cost_in",
+      label: "Giá nhập",
+      placeholder: "12,000,000đ",
+    },
     {
       type: "text",
       name: "cost_out",
-      label: "Cost out",
-      placeholder: "Cost out",
+      label: "Giá bán",
+      placeholder: "12,000,000đ",
     },
     {
       type: "number",
       name: "quantity",
-      label: "Quantity",
-      placeholder: "Quantity",
+      label: "Số lượng nhập",
       min: 1,
-      value: 1
+      value: 1,
     },
-    { type: "file", name: "image", label: "Choose file:"},
+    { type: "file", name: "image", label: "Choose file:" },
     {
       type: "select",
       name: "type_id",
-      label: "Type",
+      label: "Loại sản phẩm",
       options: [
         { value: 1, label: "Điện thoại" },
         { value: 2, label: "PC và laptop" },
@@ -40,7 +44,7 @@ function CreateProduct() {
     {
       type: "select",
       name: "manufacture",
-      label: "Manufacture",
+      label: "Nhà sản xuất",
       options: [
         { value: 1, label: "Apple" },
         { value: 2, label: "Samsung" },
@@ -56,8 +60,10 @@ function CreateProduct() {
         formData
       );
       if (success) {
-        alert('Đã tạo sản phẩm thành công, bây giờ thêm chi tiết nha!');
-        navigate(`/product/createDetail?type_id=${data.type_id}&product_id=${data.id}`);
+        alert("Đã tạo sản phẩm thành công, bây giờ thêm chi tiết nha!");
+        navigate(
+          `/product/createDetail?type_id=${data.type_id}&product_id=${data.id}`
+        );
       } else {
         setErrors(error);
         const timeout = setTimeout(() => {

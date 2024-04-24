@@ -22,16 +22,15 @@ function ProductsType() {
   });
   const navigate = useNavigate();
 
-  const headerTitle = "Product List";
+  const headerTitle = "Danh sách sản phẩm";
   const headers = [
-    "Product name",
-    "Cost in",
-    "Cost out",
-    "Image",
-    "Quantity",
-    "Manufacture",
-    "Type",
-    "Action",
+    "Tên sản phẩm",
+    "Giá nhập",
+    "Giá bán",
+    "Ảnh",
+    "Số lượng",
+    "Nhà sản xuất",
+    "Loại sản phẩm",
   ];
   const handleShowDeleteModal = (id) => {
     setProductIdToDelete(id);
@@ -167,11 +166,11 @@ function ProductsType() {
             <div className="card " style={{ width: "23%" }}>
               <div className="card-header">
                 <FontAwesomeIcon icon={faFilter} />
-                Filter
+                Lọc kết quả
               </div>
               <div className="card-body">
                 <div className="mb-3">
-                  <label> Name</label>
+                  <label> Tên sản phẩm </label>
                   <input
                     className="form-control"
                     type="text"
@@ -181,7 +180,7 @@ function ProductsType() {
                 </div>
                 <div className="mb-3">
                   <label htmlFor="input-model" className="form-label">
-                    Type
+                    Loại sản phẩm
                   </label>
                   <select
                     name="type_id"
@@ -198,13 +197,13 @@ function ProductsType() {
 
                 <div className="mb-3">
                   <label htmlFor="input-price" className="form-label">
-                    Price
+                    Giá
                   </label>{" "}
                   <div className="d-flex">
                     <input
                       type="text"
                       name="min_cost_out"
-                      placeholder="Price"
+                      placeholder="từ"
                       id="input-price"
                       className="form-control"
                       onChange={handleInputChange}
@@ -212,21 +211,12 @@ function ProductsType() {
                     <input
                       type="text"
                       name="max_cost_out"
-                      placeholder="Price"
+                      placeholder="đến"
                       id="input-price"
                       className="form-control"
                       onChange={handleInputChange}
                     />
                   </div>
-                </div>
-                <div className="text-end">
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={handleFilter}
-                  >
-                    Filter
-                  </button>
                 </div>
               </div>
             </div>

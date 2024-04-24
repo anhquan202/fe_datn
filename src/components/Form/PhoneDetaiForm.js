@@ -35,14 +35,14 @@ function PhoneDetailForm({ onSubmit, errors, data, title }) {
     },
     {
       type: "text",
-      name: "Screen",
+      name: "screen",
       label: "Screen",
       placeholder: "Screen",
     },
 
     {
       type: "select",
-      name: "operating_ystem",
+      name: "operating_system",
       label: "Operating System",
       options: [
         { value: "iOS 10", label: "iOS 10" },
