@@ -18,7 +18,7 @@ function ComputersDetail({ data, titleHeader }) {
   };
   return (
     <div className="container">
-      <div className="d-flex">
+      <div className="d-flex justify-content-center">
         <Table
           headers={headers}
           data={data}

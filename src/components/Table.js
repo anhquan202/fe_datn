@@ -54,9 +54,9 @@ function Table({
   };
   return (
     <>
-      <Modal show={showModal} onHide={closeModal} size="lg">
+      <Modal show={showModal} onHide={closeModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Informaiton Detail</Modal.Title>
+          <Modal.Title>Thông tin chi tiết</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {dataType === "product" && detailData && (
@@ -67,7 +67,7 @@ function Table({
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={closeModal}>
+          <Button variant="secondary" className={'btn-danger'} onClick={closeModal}>
             Close
           </Button>
         </Modal.Footer>

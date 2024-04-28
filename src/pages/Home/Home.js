@@ -50,7 +50,7 @@ function Home() {
           headers={headers}
           data={topProducts}
           disabled={true}
-          styleCss={'w-50 pe-3'}
+          styleCss={'w-50 pe-3 border-0'}
         />
 
         <BarChart />

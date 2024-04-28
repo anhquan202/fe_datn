@@ -32,7 +32,6 @@ function Login() {
       // Xử lý lỗi nếu cần
     }
   };
-  console.log(typeof errors);
   return (
     <>
       <div id="content">

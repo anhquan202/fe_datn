@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as invoiceServices from "src/services/Invoice/invoiceService";
+import { Modal } from "react-bootstrap";
 import Button from "src/components/Button";
 import Search from "src/components/Search";
 import Table from "src/components/Table";
-import Modal from "react-bootstrap/Modal";
 function OrderForm() {
   const [showModal, setShowModal] = useState(false);
+  const [searchProduct, setSearchProduct] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const navigate = useNavigate();
   const [errors, setErrors] = useState([]);
   const [order, setOrder] = useState({
     receiver_address: "",
     receiver_phone: "",
-    payment_method: "",
+    payment_method: "Tiền mặt",
     details: [],
     total_amount: 0,
     customer_id: 0,
@@ -24,10 +26,6 @@ function OrderForm() {
     unit_price: 0,
     total_price: 0,
   });
-  const closeModal = () => {
-    setShowModal(false);
-  };
-  const navigate = useNavigate();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setOrder({
@@ -91,12 +89,12 @@ function OrderForm() {
         unit_price: 0,
         total_price: 0,
       });
+      setSearchProduct("");
       setSelectedProduct(null);
     } catch (error) {
       console.log(error);
     }
   };
-
   useEffect(() => {
     const calculateTotalPrice = () => {
       let total = 0;
@@ -127,6 +125,12 @@ function OrderForm() {
         alert("Đơn hàng được tạo thành công");
         navigate("/invoices");
       } else {
+        if (error.details) {
+          const confirmed = window.confirm(`${error.details}`);
+          if (confirmed) {
+            setErrors([]);
+          }
+        }
         setErrors(error);
         const timeout = setTimeout(() => {
           setErrors([]);
@@ -137,10 +141,16 @@ function OrderForm() {
       console.log(error);
     }
   };
-  const handleDeleteItemCart = (id) => {
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+  const handleShowDeleteModal = (productId) => {
+    setSelectedProduct(productId);
     setShowModal(true);
+  };
+  const handleDeleteItemCart = () => {
     const index = order.details.findIndex(
-      (product) => product.product_id === id
+      (product) => product.product_id === selectedProduct
     );
     if (index !== -1) {
       // Tạo một bản sao của mảng details
@@ -153,24 +163,34 @@ function OrderForm() {
         details: updatedDetails,
       });
     }
+    setShowModal(false);
   };
   return (
     <>
-      {/* <Modal show={showModal} onHide={closeModal} size="lg">
+      <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Product Detail</Modal.Title>
+          <Modal.Title>Xác nhận xóa sản phẩm</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <p>Bạn có chắc chắn muốn xóa sản phẩm này không</p>      
-            <Button onClick={closeModal}>Không</Button>
-            <Button onClick={""}>Có</Button>
+          <p>Bạn có chắc chắn muốn xóa sản phẩm này không?</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={closeModal}>
-            Close
+          <Button
+            variant="secondary"
+            className={"btn-danger"}
+            onClick={handleCloseModal}
+          >
+            Hủy
+          </Button>
+          <Button
+            variant="primary"
+            className={"btn-primary"}
+            onClick={handleDeleteItemCart}
+          >
+            Đồng ý
           </Button>
         </Modal.Footer>
-      </Modal> */}
+      </Modal>
       <form className="container-fluid">
         <div className="d-flex justify-content-between flex-wrap">
           <div className="mb-3 w-100">
@@ -226,19 +246,25 @@ function OrderForm() {
             name={"product_name"}
             className={"w-50"}
             onSelected={setSelectedProduct}
+            value={searchProduct}
           />
 
           <div className="d-flex align-items-end">
-            <label className="me-1">Quantity:</label>
-            <input
-              type="number"
-              name="quantity"
-              className="form-control"
-              value={newProduct.quantity}
-              onChange={handleProductInputChange}
-            />
+            <div>
+              <label className="me-1">Quantity:</label>
+              <input
+                type="number"
+                name="quantity"
+                className="form-control"
+                min={1}
+                value={newProduct.quantity}
+                onChange={handleProductInputChange}
+              />
+            </div>
+            {errors.errorQuantity && (
+              <p className="text-danger">{errors.errorQuantity}</p>
+            )}
           </div>
-          {/* {errors && <p className="text-danger">{errors.quantity}</p>} */}
           <Button className={"btn-primary"} onClick={addProduct}>
             Add product
           </Button>
@@ -249,9 +275,9 @@ function OrderForm() {
             headers={headers}
             data={order.details}
             showEditButton={false}
-            onDelete={(id) => handleDeleteItemCart(id)}
+            showModalDelete={handleShowDeleteModal}
           />
-          <p>Total Price: {order.total_amount}</p>
+          <p>Total Price: {order.total_amount.toLocaleString()}</p>
         </div>
         <Button className={"btn-primary"} onClick={handleSubmit}>
           Submit

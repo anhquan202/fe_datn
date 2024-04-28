@@ -17,7 +17,7 @@ function PhoneDetail({ data, titleHeader }) {
     navigate(`/product/updateDetail/${productId}?type_id=1`);
   };
   return (
-    <div className="d-flex">
+    <div className="d-flex justify-content-center">
       <Table
         headers={headers}
         data={data}
