@@ -106,6 +106,21 @@ export const postProductDetail = async (typeID, data) => {
     };
   }
 };
+export const putProductDetail = async (typeID, data, id) => {
+  const product = productDetailApis.find((item) => item.id === typeID);
+  try {
+    const res = await request.put(product.apiUrl, data, id);
+    return {
+      data: res.data,
+      success: true,
+    };
+  } catch (error) {
+    return {
+      error: error.response?.data?.error,
+      success: false,
+    };
+  }
+};
 export const GetProductByType = async (typeID, page) => {
   try {
     const res = await request.get("products/producttype", {

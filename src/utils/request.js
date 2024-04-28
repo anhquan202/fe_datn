@@ -12,6 +12,10 @@ export const post = async (path, data, options = {}) => {
   const respone = await request.post(path, data, options);
   return respone.data;
 };
+export const put = async (path, data, id, options = {}) => {
+  const respone = await request.post(`${path}/${id}`, data,  options);
+  return respone.data;
+};
 export const del = async (path, id, options={}) => {
   const respone = await request.delete(path, id, options);
   return respone.data;

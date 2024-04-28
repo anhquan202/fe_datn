@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import * as productService from "src/services/Product/productService";
 import AudioDetailForm from "src/components/Form/AudioDetailForm";
 import ComputersDetailForm from "src/components/Form/ComputersDetail";
 import PhoneDetailForm from "src/components/Form/PhoneDetaiForm";
 function UpdateProductDetail() {
   const { productId } = useParams();
+  const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   let typeId = searchParams.get("type_id");
@@ -31,17 +32,20 @@ function UpdateProductDetail() {
   }, [productId, typeId]);
   const handleSubmit = async (formData) => {
     try {
-      const { data, sucees, error } = await productService.postProductDetail(
+      const { data, success, error } = await productService.putProductDetail(
         typeId,
-        formData
+        formData,
+        productId
       );
-      if (sucees) {
-        console.log(data);
+      if (success) {
+        alert("Cập nhập thông tin chi tiết thành công");
+        navigate("/products");
       } else {
         setErrors(error);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+      return error;
     }
   };
   const title = "Cập nhật thông tin chi tiết";
