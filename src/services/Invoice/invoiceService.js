@@ -87,6 +87,81 @@ export const postInvoice = async (data) => {
     };
   }
 };
+export const getInvoiceByDay = async() => {
+  try {
+    const res = await request.get('/invoiceByDay')
+    return {
+      data: res
+    };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const getSalesByDay = async() => {
+  try {
+    const res = await request.get('/salesByDay')
+    return {
+      data: res
+    };
+  } catch (error) {
+    console.log(error);
+  }
+}
+export const getInvoiceByWeek = async() => {
+  try {
+    const res = await request.get('/invoiceByWeek')
+    return {
+      data: res
+    };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const getSalesByWeek= async() => {
+  try {
+    const res = await request.get('/salesByWeek')
+    return {
+      data: res
+    };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const getInvoiceByMonth = async() => {
+  try {
+    const res = await request.get('/invoiceByMonth')
+    return {
+      data: res
+    };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const getSalesByMonth = async() => {
+  try {
+    const res = await request.get('/salesByMonth')
+    return {
+      data: res
+    };
+  } catch (error) {
+    console.log(error);
+  }
+}
+export const getReportsByTime = async(startDay, endDay) => {
+  const res = await request.get('checkAndHandleRequest', {
+    params: {
+      startDay,
+      endDay
+    }
+  })
+  return {
+    data: res
+  }
+}
 export const updateStatusInvoice = async (id, status) => {
   try {
     const res = await request.post(`/updateStatus/${id}`, status);
