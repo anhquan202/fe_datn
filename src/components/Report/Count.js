@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
-function Statistics({title, icon, data, to}) {
+function Statistics({title, icon, data}) {
   return (
     <>
       <div className="col-lg-3 col-md-3 col-sm-6">
@@ -14,7 +14,6 @@ function Statistics({title, icon, data, to}) {
               <span>{data}</span>
             </div>
             <div className="card-footer">
-              <Link to={to}/>
             </div>
           </div>
         </div>

@@ -23,7 +23,8 @@ function Table({
   dataType,
   showDeleteButton = true,
   showEditButton = true,
-  showModalDelete
+  showModalDelete,
+  text = 'Đã xử lí'
 }) {
   const [detailData, setDetailData] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -126,8 +127,8 @@ function Table({
                         </td>
                       )
                   )}
-                  <td className={`text-center ${disabled ? "d-none" : ""}`}>
-                    {showEditButton && (
+                  <td className={`text-center ${disabled? "d-none" : ""}`}>
+                    {showEditButton && item.status !== 'Đã hoàn tất' && (
                       <Button
                         className="btn-primary w-75"
                         onClick={(e) => onEdit(e,item.id)}
